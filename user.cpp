@@ -130,8 +130,11 @@ void ApplyGravity(Object &obj, float dt)
 // Возможное решение может занимать примерно 3 строки.
 // Ваше решение может сильно отличаться.
 //
-void MakeJump(Object &obj, float dt)
-{
+void MakeJump(Object &obj, float dt) {
+	if (obj.physics.can_jump) { // checking whether we can jump
+		can_jump = 0; // as we jump we cannot do a jump in the air
+		obj.physics.acceleration[0] += 1.0f; // accelerate the player upwards (the number to be changed)
+	}
 }
 
 // Задание MoveCameraTowards.
