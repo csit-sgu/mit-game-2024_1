@@ -57,9 +57,10 @@ void SolveCollision(Object &obj, Collision c, float dt)
         obj.physics.speed.y = 0;
     }
     else if (c.overlap.y < 0) {
+        if (obj.physics.speed.y < 0) obj.physics.can_jump = true;
         obj.physics.speed.y = 0;
         obj.physics.acceleration.y = 0;
-        obj.physics.can_jump = true;
+        
     }
 }
 
