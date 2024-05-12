@@ -22,7 +22,7 @@
 //
 Collision CheckCollision(Object &obj1, Object &obj2)
 {
-    return Collision{};
+    return Collision {};
 }
 
 // Задание SolveCollision.
@@ -50,8 +50,8 @@ void SolveCollision(Object &obj, Collision c, float dt)
     
     if (!c.exists) return;
 
-    if (abs(c.overlap.y) < abs(c.overlap.x)) obj.position.y -= c.overlap.y *1.01;
-    else obj.position.x -= c.overlap.x *1.01;
+    if (abs(c.overlap.y) < abs(c.overlap.x)) obj.position.y -= c.overlap.y * 1.01;
+    else obj.position.x -= c.overlap.x * 1.01;
     
     if (c.overlap.y > 0) {
         obj.physics.speed.y = 0;
@@ -100,7 +100,6 @@ void SolveCollision(Object &obj, Collision c, float dt)
 //
 void FixCollisions(Scene &scene, float dt)
 {
-    
 }
 
 // Задание ApplyGravity.
@@ -130,8 +129,6 @@ void FixCollisions(Scene &scene, float dt)
 //
 void ApplyGravity(Object &obj, float dt)
 {
-    
-    
 }
 
 // Задание MakeJump.
