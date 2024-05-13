@@ -377,8 +377,21 @@ void KillEnemies(Context &ctx)
 //
 // Возможное решение может занимать примерно 6-8 строк.
 //
-void ApplyOnDeath(Context &ctx, Object &obj)
+
+void ApplyOnDeath(Context& ctx, Object& obj)
 {
+    std::string soundFile;
+    if (obj.player.enabled)
+    {
+        soundFile = "Assets/Sounds/death.mp3";
+    }
+    else if (obj.enemy.enabled)
+    {
+        soundFile = "Assets/Sounds/enemy_death.mp3";
+    }
+    Sound deathSound = LoadSound(soundFile);
+    PlaySound(deathSound);
+
 }
 
 // Задание ApplyOnSpawn.
