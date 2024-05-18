@@ -50,8 +50,8 @@ void SolveCollision(Object &obj, Collision c, float dt)
     
     if (!c.exists) return;
 
-    if (abs(c.overlap.y) < abs(c.overlap.x)) obj.position.y -= c.overlap.y * 1.01;
-    else obj.position.x -= c.overlap.x * 1.01;
+    if (abs(c.overlap.y) < abs(c.overlap.x)) obj.position.y -= c.overlap.y;
+    else obj.position.x -= c.overlap.x;
     
     if (c.overlap.y > 0) {
         obj.physics.speed.y = 0;
