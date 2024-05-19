@@ -313,6 +313,14 @@ void PlayerControl(Context &ctx, Object &player, float dt)
 //
 void ShootBullet(Context &ctx, Object &player, float dt)
 {
+    Object bullet = Object();
+
+    bullet.position = player.position;
+    bullet.render = Render(ctx, "Assets/bullet.png");
+    bullet.collider = Collider(bullet.render, {ColliderType::EVENT});
+    bullet.bullet = Bullet(player.player.direction == Direction::LEFT ? Vector2({-5, 0}) : Vector2({5, 0}), 2.0f);
+
+    Spawn(ctx, bullet);
 }
 
 // Задание UpdateBullet.
