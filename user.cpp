@@ -47,6 +47,21 @@ Collision CheckCollision(Object &obj1, Object &obj2)
 //
 void SolveCollision(Object &obj, Collision c, float dt)
 {
+    
+    if (!c.exists) return;
+
+    if (abs(c.overlap.y) < abs(c.overlap.x)) obj.position.y -= c.overlap.y;
+    else obj.position.x -= c.overlap.x;
+    
+    if (c.overlap.y > 0) {
+        obj.physics.speed.y = 0;
+    }
+    else if (c.overlap.y < 0) {
+        if (obj.physics.speed.y < 0) obj.physics.can_jump = true;
+        obj.physics.speed.y = 0;
+        obj.physics.acceleration.y = 0;
+        
+    }
 }
 
 // Задание FixCollisions.
