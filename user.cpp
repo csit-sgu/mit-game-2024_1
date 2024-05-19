@@ -116,7 +116,7 @@ void ApplyGravity(Object &obj, float dt)
 {
     ColliderType dynamic = ColliderType :: DYNAMIC;
     //проверяем должнали данная функция влиять на данный объект 
-    if(obj.physics.enabled == true && obj.collider.of_type(dynamic) == true)
+    if (obj.physics.enabled && obj.collider.of_type(dynamic))
     {
         //добавляем ускорение свободного падения по оси Oy
         obj.physics.acceleration.y = GRAVITY;
@@ -128,7 +128,6 @@ void ApplyGravity(Object &obj, float dt)
         }
         //меняем позицию игрока 
         obj.position.y += obj.physics.speed.y * dt;
-        
     }
 }
 
