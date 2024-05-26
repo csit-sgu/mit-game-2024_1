@@ -119,12 +119,12 @@ void ApplyGravity(Object &obj, float dt)
     if (obj.physics.enabled && obj.collider.of_type(dynamic))
     {
         //добавляем ускорение свободного падения по оси Oy
-        obj.physics.acceleration.y = GRAVITY;
+        obj.physics.acceleration.y = -GRAVITY;
         //уменьшили скорость по оси Oy на измененное ускорение
-        obj.physics.speed.y -= obj.physics.acceleration.y * dt;
+        obj.physics.speed.y += obj.physics.acceleration.y * dt;
         //ограничиваем скорость 
-        if (obj.physics.speed.y > 210){
-            obj.physics.speed.y = 210;
+        if (obj.physics.speed.y < -210){
+            obj.physics.speed.y = -210;
         }
         //меняем позицию игрока 
         obj.position.y += obj.physics.speed.y * dt;
