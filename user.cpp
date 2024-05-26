@@ -318,7 +318,7 @@ void ShootBullet(Context &ctx, Object &player, float dt)
     bullet.position = player.position;
     bullet.render = Render(ctx, "Assets/bullet.png");
     bullet.collider = Collider(bullet.render, {ColliderType::EVENT});
-    bullet.bullet = Bullet(player.player.direction == Direction::LEFT ? Vector2({-5, 0}) : Vector2({5, 0}), 2.0f);
+    bullet.bullet = Bullet(player.player.direction == Direction::LEFT ? Vector2({-10, 0}) : Vector2({10, 0}), 3.0f);
 
     Spawn(ctx, bullet);
 }
