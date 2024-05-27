@@ -341,8 +341,11 @@ void ShootBullet(Context &ctx, Object &player, float dt)
 //
 void UpdateBullet(Context &ctx, Object &obj, float dt)
 {
+    obj.position += obj.bullet.speed;
+    obj.bullet.lifetime += dt;
+    if (obj.bullet.lifetime >= obj.bullet.max_lifetime) 
+        Destroy(ctx, obj);
 }
-
 // Задание KillEnemies.
 //
 // Пройдёмся в цикле по объектам сцены (ctx.current_scene), проверяя, что этот
