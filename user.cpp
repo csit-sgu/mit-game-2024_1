@@ -341,7 +341,7 @@ void ShootBullet(Context &ctx, Object &player, float dt)
 //
 void UpdateBullet(Context &ctx, Object &obj, float dt)
 {
-    obj.position += obj.bullet.speed;
+    obj.position += obj.bullet.speed*dt;
     obj.bullet.lifetime += dt;
     if (obj.bullet.lifetime >= obj.bullet.max_lifetime) 
         Destroy(ctx, obj);
