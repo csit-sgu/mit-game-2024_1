@@ -129,6 +129,21 @@ void FixCollisions(Scene &scene, float dt)
 //
 void ApplyGravity(Object &obj, float dt)
 {
+    ColliderType dynamic = ColliderType :: DYNAMIC;
+    //проверяем должнали данная функция влиять на данный объект 
+    if (obj.physics.enabled && obj.collider.of_type(dynamic))
+    {
+        //добавляем ускорение свободного падения по оси Oy
+        obj.physics.acceleration.y = -GRAVITY;
+        //уменьшили скорость по оси Oy на измененное ускорение
+        obj.physics.speed.y += obj.physics.acceleration.y * dt;
+        //ограничиваем скорость 
+        if (obj.physics.speed.y < -210){
+            obj.physics.speed.y = -210;
+        }
+        //меняем позицию игрока 
+        obj.position.y += obj.physics.speed.y * dt;
+    }
 }
 
 // Задание MakeJump.
