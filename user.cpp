@@ -163,6 +163,11 @@ void ApplyGravity(Object &obj, float dt)
 //
 void MakeJump(Object &obj, float dt)
 {
+	if (obj.physics.can_jump)
+	{
+		obj.physics.can_jump = false;
+		obj.physics.speed.y += 30.0f;
+	}
 }
 
 // Задание MoveCameraTowards.
