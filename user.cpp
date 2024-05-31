@@ -1,6 +1,7 @@
 #include "user.hpp"
 #include "internal.hpp"
 #include <raylib.h>
+#include <random>
 
 // Задание CheckCollision.
 //
@@ -130,7 +131,7 @@ void FixCollisions(Scene &scene, float dt)
 void ApplyGravity(Object &obj, float dt)
 {
     ColliderType dynamic = ColliderType :: DYNAMIC;
-    //проверяем должнали данная функция влиять на данный объект 
+    //проверяем должна ли данная функция влиять на данный объект 
     if (obj.physics.enabled && obj.collider.of_type(dynamic))
     {
         //добавляем ускорение свободного падения по оси Oy
@@ -265,9 +266,32 @@ bool CheckFinish(Object &player, Scene &scene)
 // Возможное решение может занимать примерно 16-20 строк.
 // Ваше решение может сильно отличаться.
 //
-void EnemyAI(Object &enemy, Scene &scene, float dt)
-{
+
+
+void MakeTeleport(Object &enemy) { // функция для телепортации
+    int SCREEN_X = 800, SCREEN_Y = 600; 
+    std::mt19937 mt; 
+    enemy.position.x = mt() % 800; 
+    enemy.position.y = mt() % 600; 
 }
+
+void EnemyAI(Object &enemy, Scene &scene, float dt) {
+
+    if (int(dt) % 4 == 0) { // каждые четыре секунды есть 33% шанс подпрыгивания
+        std::mt19937 mt; 
+        if (mt() % 3 == 0) {
+            MakeJump(enemy, dt); 
+        }
+        else if (mt() % 5) { // если прыжок не удался, то есть 10% шанс телепортации
+
+        }
+    }
+    enemy.physics.speed
+    float x = find_player(scene)->position.x; 
+    float y = find_player(scene)->position.y; 
+    enemy.position.x
+}
+
 
 // Задание PlayerControl.
 //
