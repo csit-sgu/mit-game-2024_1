@@ -276,20 +276,22 @@ void MakeTeleport(Object &enemy) { // функция для телепортац
 }
 
 void EnemyAI(Object &enemy, Scene &scene, float dt) {
+    int FPS = 60; 
 
-    if (int(dt) % 4 == 0) { // каждые четыре секунды есть 33% шанс подпрыгивания
+    if (int(dt) % 3 == 0) { // каждые три секунды есть 33% шанс подпрыгивания
         std::mt19937 mt; 
+
         if (mt() % 3 == 0) {
             MakeJump(enemy, dt); 
         }
-        else if (mt() % 5) { // если прыжок не удался, то есть 10% шанс телепортации
-
+        else if (mt() % 20 == 0) { // если прыжок не удался, то есть 5% шанс телепортации в рандомную позицию
+            MakeTeleport(enemy); 
+        }
+        else {
+            float move = FPS * enemy.enemy.speed; 
+            enemy.position.x += find_player(scene)->position.x > enemy.position.x ? -move : move; 
         }
     }
-    enemy.physics.speed
-    float x = find_player(scene)->position.x; 
-    float y = find_player(scene)->position.y; 
-    enemy.position.x
 }
 
 
