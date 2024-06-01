@@ -100,6 +100,25 @@ void SolveCollision(Object &obj, Collision c, float dt)
 //
 void FixCollisions(Scene &scene, float dt)
 {
+    for(Scene::iterator obj1 = scene.begin(); obj1 < scene.end() - 1; ++obj1) {
+        bool collider1Dynamic = obj1->collider.enabled && obj1->collider.of_type(ColliderType::DYNAMIC);
+        if(!collider1Dynamic) {
+            continue;
+        }
+        for(Scene::iterator obj2 = obj1 + 1; obj2 < scene.end(); ++obj2) {
+            bool collider2good = obj2->collider.enabled
+                 && (obj2->collider.of_type(ColliderType::DYNAMIC)
+                     || obj2->collider.of_type(ColliderType::STATIC));
+            if(!collider2good) {
+                continue;
+            }
+            auto collision = CheckCollision(*obj1, *obj2);
+            SolveCollision(*obj1, collision, dt);
+            if(obj2->collider.of_type(ColliderType::DYNAMIC)) {
+                SolveCollision(*obj2, collision, dt);
+            }
+        }
+    }
 }
 
 // Задание ApplyGravity.
