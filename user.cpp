@@ -479,8 +479,25 @@ void ApplyOnSpawn(Context &ctx, Object &obj)
 //
 // Возможное решение может занимать примерно N строк.
 //
-void DrawDeathScreen(Context &ctx)
-{
+void DrawDeathScreen(Context &ctx) {
+    // Текст сообщения о смерти
+    const char* deathMessage = "WASTED";
+
+    // Вычисление ширины и высоты текста сообщения
+    int textWidth = MeasureText(deathMessage, 40);
+    int textHeight = 40;
+    
+    // Вычисление координат для размещения текста по центру экрана
+    int screenWidth = GetScreenWidth();
+    int screenHeight = GetScreenHeight();
+    int X = (screenWidth - textWidth) / 2;
+    int Y = (screenHeight - textHeight) / 2;
+
+    // Отрисовка прямоугольника под текст сообщения от смерти
+    DrawRectangle(0, 0, screenWidth, screenHeight, BLACK);
+
+    // Отрисовка текста сообщения о смерти
+    DrawText(deathMessage, X, Y, 35, RED);
 }
 
 // Задание DrawGameOverScreen.
