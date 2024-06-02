@@ -184,15 +184,14 @@ void MakeJump(Object &obj, float dt)
 //
 void MoveCameraTowards(Context &ctx, Object &obj, float dt)
 {
-    Vector2 direction = {obj.position.x - ctx.camera_pos.x, obj.position.y - ctx.camera_pos.y};
+    Vector2 direction = {obj.position - ctx.camera_pos};
     float distance = Vector2Length(direction);
-    float speed = 1.0f; // Скорость в метрах в секунду (можно задать любое значение)
+    float speed = 6.0f; // Скорость в метрах в секунду (можно задать любое значение)
 
     if (distance > 0)
     {
         float factor = fmin(speed * dt, distance) / distance;
-        ctx.camera_pos.x += direction.x * factor;
-        ctx.camera_pos.y += direction.y * factor;
+        ctx.camera_pos += direction * factor;
     }
 }
 
