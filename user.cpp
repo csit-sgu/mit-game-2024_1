@@ -20,10 +20,31 @@
 // Возможное решение может занимать примерно 15-18 строк.
 // Ваше решение может сильно отличаться.
 //
-Collision CheckCollision(Object &obj1, Object &obj2)
+Collision CheckCollision(Object& obj1, Object& obj2)
 {
-    return Collision {};
+    Vector2 d = obj1.position - obj2.position;
+    float half_width_sum = (obj1.collider.width + obj2.collider.width) / 2;
+    float half_height_sum = (obj1.collider.height + obj2.collider.height) / 2;
+    Vector2 q = { abs(d.x) - half_width_sum, abs(d.y) - half_height_sum };
+    q.x = (d.x >= 0) ? abs(q.x) : -abs(q.x);
+    q.y = (d.y >= 0) ? abs(q.y) : -abs(q.y);
+    if (q.x < 0 && q.y < 0)
+    {
+        return Collision{
+            true,
+            q
+        };
+    }
+    else
+    {
+        return Collision{
+            false,
+            {0, 0}
+        };
+    }
 }
+
+
 
 // Задание SolveCollision.
 //
@@ -226,6 +247,14 @@ void MoveCameraTowards(Context &ctx, Object &obj, float dt)
 //
 bool CheckPlayerDeath(Object &player, Scene &scene)
 {
+    for (auto& obj : scene) {
+        if (obj.enemy.enabled) {
+            Collision collision = CheckCollision(player, obj);
+            if (collision.exists) {
+                return true;
+            }
+        }
+    }
     return false;
 }
 
@@ -422,6 +451,19 @@ void UpdateBullet(Context &ctx, Object &obj, float dt)
 //
 void KillEnemies(Context &ctx)
 {
+    for (auto obj1 : ctx.current_scene) {
+        if (obj1.enemy.enabled) {
+            for (auto obj2 : ctx.current_scene) {
+                if (obj2.bullet.enabled) {
+                    if (CheckCollision(obj1, obj2).exists) {
+                        Destroy(ctx, obj1);
+                        Destroy(ctx, obj2);
+                        ApplyOnDeath(ctx, obj1);
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Задание ApplyOnDeath.
@@ -499,8 +541,25 @@ void ApplyOnSpawn(Context &ctx, Object &obj)
 //
 // Возможное решение может занимать примерно N строк.
 //
-void DrawDeathScreen(Context &ctx)
-{
+void DrawDeathScreen(Context &ctx) {
+    // Текст сообщения о смерти
+    const char* deathMessage = "WASTED";
+
+    // Вычисление ширины и высоты текста сообщения
+    int textWidth = MeasureText(deathMessage, 40);
+    int textHeight = 40;
+    
+    // Вычисление координат для размещения текста по центру экрана
+    int screenWidth = GetScreenWidth();
+    int screenHeight = GetScreenHeight();
+    int X = (screenWidth - textWidth) / 2;
+    int Y = (screenHeight - textHeight) / 2;
+
+    // Отрисовка прямоугольника под текст сообщения от смерти
+    DrawRectangle(0, 0, screenWidth, screenHeight, BLACK);
+
+    // Отрисовка текста сообщения о смерти
+    DrawText(deathMessage, X, Y, 35, RED);
 }
 
 // Задание DrawGameOverScreen.
