@@ -210,6 +210,15 @@ void MakeJump(Object &obj, float dt)
 //
 void MoveCameraTowards(Context &ctx, Object &obj, float dt)
 {
+    Vector2 direction = {obj.position - ctx.camera_pos};
+    float distance = Vector2Length(direction);
+    float speed = 6.0f; // Скорость в метрах в секунду (можно задать любое значение)
+
+    if (distance > 0)
+    {
+        float factor = fmin(speed * dt, distance) / distance;
+        ctx.camera_pos += direction * factor;
+    }
 }
 
 // Задание CheckPlayerDeath.
