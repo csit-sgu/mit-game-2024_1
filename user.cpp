@@ -100,16 +100,17 @@ void SolveCollision(Object &obj, Collision c, float dt)
 //
 void FixCollisions(Scene &scene, float dt)
 {
+    auto checker = [](Scene::iterator &obj) {
+        return obj->collider.enabled
+               && (obj->collider.of_type(ColliderType::DYNAMIC)
+                   || obj->collider.of_type(ColliderType::STATIC));
+    };
     for(Scene::iterator obj1 = scene.begin(); obj1 < scene.end() - 1; ++obj1) {
-        bool collider1Dynamic = obj1->collider.enabled && obj1->collider.of_type(ColliderType::DYNAMIC);
-        if(!collider1Dynamic) {
+        if(!checker(obj1)) {
             continue;
         }
         for(Scene::iterator obj2 = obj1 + 1; obj2 < scene.end(); ++obj2) {
-            bool collider2good = obj2->collider.enabled
-                 && (obj2->collider.of_type(ColliderType::DYNAMIC)
-                     || obj2->collider.of_type(ColliderType::STATIC));
-            if(!collider2good) {
+            if(!checker(obj2) || (obj2->collider.of_type(ColliderType::STATIC) == obj1->collider.of_type(ColliderType::STATIC))) {
                 continue;
             }
             auto collision = CheckCollision(*obj1, *obj2);
