@@ -650,4 +650,27 @@ void ConstructMenuScene(Context &ctx, Scene &game_scene)
 //
 void DrawStatus(Context &ctx)
 {
+    Vector2 status_size = {int(ctx.screen_size.x), int(ctx.screen_size.y * 0.1)};
+    Image status_box_image = LoadImage("Assets/status_box_helpMePls.jpg");
+    ImageDrawRectangle(&status_box_image, 0, 0, status_size.x, status_size.y, {10, 7, 0, 111});
+    //DrawRectangle(0, 0, int(screen_size.x), int(screen_size.y * 0.1), {0, 0, 0, 255});
+
+    // картинки, как колличество жизней
+    Texture2D heart = LoadTexture("Assets/heart.png");
+    double k = status_size.y / (2 * heart.height);
+    heart.height *= k;
+    heart.width *= k;
+    int step = std::max(heart.width, int(ctx.screen_size.x * 0.25 / ctx.lives)),
+        pos = std::max(int(status_size.x / 25), step - heart.width);
+    for(int i = ctx.lives - 1; ~i; --i)
+        DrawTexture(heart, ctx.screen_size.x - pos - step * i - heart.width, int(status_size.y * 3 / 8), {255, 255, 255, 0});
+    
+    // количество очков
+    std::string scoreC = std::to_string(ctx.score);
+    DrawText(scoreC, pos, int(status_size.y * 3 / 8), heart.height, {255, 255, 255, 255});
+    // надпись "score: "
+    DrawText(std::to_string(ctx.score), pos, int(status_size.y / 8), int(status_size.y / 4), {255, 255, 255, 233});
+    // время
+    std::string status_time = std::to_string(int(ctx.score / 600)) + ":" + (int(ctx.score / 10) % 60 < 10 ? "0" : "") + std::to_string(int(ctx.score / 10) % 60);
+    DrawText(status_time, ctx.screen_size.x - pos, int(status_size.y / 8), int(status_size.y / 4), {255, 255, 255, 233});
 }
