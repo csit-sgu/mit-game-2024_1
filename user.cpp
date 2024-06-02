@@ -121,6 +121,26 @@ void SolveCollision(Object &obj, Collision c, float dt)
 //
 void FixCollisions(Scene &scene, float dt)
 {
+    bool (*checker)(Object&) { [](Object &obj) {
+        return obj.collider.enabled
+               && (obj.collider.of_type(ColliderType::DYNAMIC)
+                   || obj.collider.of_type(ColliderType::STATIC));
+    } };
+    for(auto &obj1 : scene) {
+        if(!checker(obj1)) {
+            continue;
+        }
+        for(auto &obj2 : scene) {
+            if(!checker(obj2) || (obj2.collider.of_type(ColliderType::STATIC) == obj1.collider.of_type(ColliderType::STATIC))) {
+                continue;
+            }
+            auto collision = CheckCollision(obj1, obj2);
+            SolveCollision(obj1, collision, dt);
+            if(obj2.collider.of_type(ColliderType::DYNAMIC)) {
+                SolveCollision(obj2, collision, dt);
+            }
+        }
+    }
 }
 
 // Задание ApplyGravity.
