@@ -558,6 +558,11 @@ void DrawMainScreen(Context &ctx)
 //
 void ConstructMenuScene(Context &ctx, Scene &game_scene)
 {
+
+    
+
+
+
 }
 
 // Задание DrawStatus.
