@@ -131,7 +131,7 @@ void FixCollisions(Scene &scene, float dt)
 void ApplyGravity(Object &obj, float dt)
 {
     ColliderType dynamic = ColliderType :: DYNAMIC;
-    //проверяем должна ли данная функция влиять на данный объект 
+    //проверяем должнали данная функция влиять на данный объект 
     if (obj.physics.enabled && obj.collider.of_type(dynamic))
     {
         //добавляем ускорение свободного падения по оси Oy
@@ -268,18 +268,20 @@ bool CheckFinish(Object &player, Scene &scene)
 //
 
 
-void MakeTeleport(Object &enemy) { // функция для телепортации
+void MakeTeleport(Object &enemy) // функция для телепортации
+{ 
     int SCREEN_X = 800, SCREEN_Y = 600; 
-    std::mt19937 mt; 
+    std::mt19937 mt(time(0)); 
     enemy.position.x = mt() % 800; 
     enemy.position.y = mt() % 600; 
 }
 
-void EnemyAI(Object &enemy, Scene &scene, float dt) {
-    int FPS = 60; 
-
-    if (int(dt) % 3 == 0) { // каждые три секунды есть 33% шанс подпрыгивания
-        std::mt19937 mt; 
+void EnemyAI(Object &enemy, Scene &scene, float dt)
+{
+    const int now = time(0); 
+    
+    if (int(now) % 3 == 0) { // каждые три секунды есть 33% шанс подпрыгивания
+        std::mt19937 mt(time(0)); 
 
         if (mt() % 3 == 0) {
             MakeJump(enemy, dt); 
@@ -288,12 +290,11 @@ void EnemyAI(Object &enemy, Scene &scene, float dt) {
             MakeTeleport(enemy); 
         }
         else {
-            float move = FPS * enemy.enemy.speed; 
+            float move = dt * enemy.enemy.speed; 
             enemy.position.x += find_player(scene)->position.x > enemy.position.x ? -move : move; 
         }
     }
 }
-
 
 // Задание PlayerControl.
 //
