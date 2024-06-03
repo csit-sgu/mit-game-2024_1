@@ -1,6 +1,7 @@
 #include "user.hpp"
 #include "internal.hpp"
 #include <raylib.h>
+#include <random>
 
 // Задание CheckCollision.
 //
@@ -294,8 +295,34 @@ bool CheckFinish(Object &player, Scene &scene)
 // Возможное решение может занимать примерно 16-20 строк.
 // Ваше решение может сильно отличаться.
 //
+
+
+void MakeTeleport(Object &enemy) // функция для телепортации
+{ 
+    int SCREEN_X = 800, SCREEN_Y = 600; 
+    std::mt19937 mt(time(0)); 
+    enemy.position.x = mt() % 800; 
+    enemy.position.y = mt() % 600; 
+}
+
 void EnemyAI(Object &enemy, Scene &scene, float dt)
 {
+    const int now = time(0); 
+    
+    if (int(now) % 3 == 0) { // каждые три секунды есть 33% шанс подпрыгивания
+        std::mt19937 mt(time(0)); 
+
+        if (mt() % 3 == 0) {
+            MakeJump(enemy, dt); 
+        }
+        else if (mt() % 20 == 0) { // если прыжок не удался, то есть 5% шанс телепортации в рандомную позицию
+            MakeTeleport(enemy); 
+        }
+        else {
+            float move = dt * enemy.enemy.speed; 
+            enemy.position.x += find_player(scene)->position.x > enemy.position.x ? -move : move; 
+        }
+    }
 }
 
 // Задание PlayerControl.
