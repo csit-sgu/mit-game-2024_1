@@ -22,22 +22,27 @@
 //
 Collision CheckCollision(Object& obj1, Object& obj2)
 {
-    Vector2 d = obj1.position - obj2.position;
+    Vector2 d = obj2.position - obj1.position;
     float half_width_sum = (obj1.collider.width + obj2.collider.width) / 2;
     float half_height_sum = (obj1.collider.height + obj2.collider.height) / 2;
+
     Vector2 q = { abs(d.x) - half_width_sum, abs(d.y) - half_height_sum };
-    q.x = (d.x >= 0) ? abs(q.x) : -abs(q.x);
-    q.y = (d.y >= 0) ? abs(q.y) : -abs(q.y);
+
     if (q.x < 0 && q.y < 0)
     {
-        return Collision{
+        q.x *= (d.x < 0 ? 1 : -1);
+        q.y *= (d.y < 0 ? 1 : -1);
+
+        return Collision
+        {
             true,
             q
         };
     }
     else
     {
-        return Collision{
+        return Collision
+        {
             false,
             {0, 0}
         };
