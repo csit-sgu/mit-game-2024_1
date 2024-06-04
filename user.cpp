@@ -30,14 +30,19 @@ Collision CheckCollision(Object& obj1, Object& obj2)
 
     if (q.x < 0 && q.y < 0)
     {
-        return Collision{
+        q.x *= (d.x < 0 ? 1 : -1);
+        q.y *= (d.y < 0 ? 1 : -1);
+
+        return Collision
+        {
             true,
             q
         };
     }
     else
     {
-        return Collision{
+        return Collision
+        {
             false,
             {0, 0}
         };
