@@ -154,13 +154,19 @@ void ApplyGravity(Object &obj, float dt)
     //проверяем должнали данная функция влиять на данный объект 
     if (obj.physics.enabled && obj.collider.of_type(dynamic))
     {
-        //добавляем ускорение свободного падения по оси Oy
-        obj.physics.acceleration.y = -GRAVITY;
-        //уменьшили скорость по оси Oy на измененное ускорение
-        obj.physics.speed.y += obj.physics.acceleration.y * dt;
-        //ограничиваем скорость 
-        if (obj.physics.speed.y < -210){
-            obj.physics.speed.y = -210;
+        if (!obj.physics.can_jump) { 
+            //добавляем ускорение свободного падения по оси Oy
+            obj.physics.acceleration.y = -GRAVITY;
+            //уменьшили скорость по оси Oy на измененное ускорение
+            obj.physics.speed.y += obj.physics.acceleration.y * dt;
+            //ограничиваем скорость 
+            if (obj.physics.speed.y < -210){
+                obj.physics.speed.y = -210;
+            }
+        }
+        else {
+            // Обнуляем ускорение, если персонаж на земле
+            obj.physics.acceleration.y = 0;
         }
         //меняем позицию игрока 
         obj.position.y += obj.physics.speed.y * dt;
@@ -437,7 +443,7 @@ void KillEnemies(Context &ctx)
     for (auto obj1 : ctx.current_scene) {
         if (obj1.enemy.enabled) {
             for (auto obj2 : ctx.current_scene) {
-                if (obj2.bullet.enabled) {
+                if (obj2.bullet.enabled && obj1 != obj2) {
                     if (CheckCollision(obj1, obj2).exists) {
                         Destroy(ctx, obj1);
                         Destroy(ctx, obj2);
