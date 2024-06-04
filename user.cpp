@@ -20,9 +20,9 @@
 // Возможное решение может занимать примерно 15-18 строк.
 // Ваше решение может сильно отличаться.
 //
-Collision CheckCollision(Object& obj1, Object& obj2)
+Collision CheckCollision(const Object& obj1, const Object& obj2)
 {
-    Vector2 d = obj1.position - obj2.position;
+    Vector2 d = obj2.position - obj1.position;
     float half_width_sum = (obj1.collider.width + obj2.collider.width) / 2;
     float half_height_sum = (obj1.collider.height + obj2.collider.height) / 2;
     Vector2 q = { abs(d.x) - half_width_sum, abs(d.y) - half_height_sum };
@@ -66,22 +66,45 @@ Collision CheckCollision(Object& obj1, Object& obj2)
 // Возможное решение может занимать примерно 14-20 строк.
 // Ваше решение может сильно отличаться.
 //
-void SolveCollision(Object &obj, Collision c, float dt)
+void SolveCollision(Object& obj, const Collision& c)
 {
-    
-    if (!c.exists) return;
-
-    if (abs(c.overlap.y) < abs(c.overlap.x)) obj.position.y -= c.overlap.y;
-    else obj.position.x -= c.overlap.x;
-    
-    if (c.overlap.y > 0) {
-        obj.physics.speed.y = 0;
+    if (!c.exists)
+    {
+        return;
     }
-    else if (c.overlap.y < 0) {
-        if (obj.physics.speed.y < 0) obj.physics.can_jump = true;
-        obj.physics.speed.y = 0;
-        obj.physics.acceleration.y = 0;
-        
+
+    float abs_overlap_x = std::abs(c.overlap.x);
+    float abs_overlap_y = std::abs(c.overlap.y);
+
+    if (abs_overlap_x > abs_overlap_y)
+    {
+        if (c.overlap.x > 0)
+        {
+            obj.position.x += c.overlap.x;
+        }
+        else
+        {
+            obj.position.x -= c.overlap.x;
+        }
+    }
+    else
+    {
+        if (c.overlap.y > 0)
+        {
+            obj.position.y += c.overlap.y;
+        }
+        else
+        {
+            obj.position.y -= c.overlap.y;
+
+            if (obj.physics.speed.y < 0)
+            {
+                obj.physics.can_jump = true;
+            }
+
+            obj.physics.speed.y = 0;
+            obj.physics.acceleration.y = 0;
+        }
     }
 }
 
