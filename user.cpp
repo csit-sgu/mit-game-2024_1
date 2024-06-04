@@ -234,7 +234,7 @@ void MoveCameraTowards(Context &ctx, Object &obj, float dt)
 bool CheckPlayerDeath(Object &player, Scene &scene)
 {
     for (auto& obj : scene) {
-        if (obj.enemy.enabled) {
+        if (obj.enemy.enabled && &obj != &player) {
             Collision collision = CheckCollision(player, obj);
             if (collision.exists) {
                 return true;
@@ -263,7 +263,7 @@ bool CheckPlayerDeath(Object &player, Scene &scene)
 bool CheckFinish(Object &player, Scene &scene)
 {
     for (auto& obj : scene) {
-        if (obj.finish.enabled) {
+        if (obj.finish.enabled && &obj != &player) {
             Collision collision = CheckCollision(player, obj);
             if (collision.exists) return true;
         }
