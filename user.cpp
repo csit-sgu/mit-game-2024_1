@@ -559,11 +559,22 @@ void DrawMainScreen(Context &ctx)
 void ConstructMenuScene(Context &ctx, Scene &game_scene)
 {
 
-    
+    Object bg;
+    // Создание нового объекта Render для фона.
+    Render bgRender;
+    bgRender.path = "Assets/menu_background.png";
 
 
+    // Установка разрешение   
+    bgRender.height = 800;
+    bgRender.width = 640;   
+    //
 
+
+    bg.render = bgRender; // Установление объекта рендеринга для фона
+    game_scene.push_back(bg); // Добавление картинки
 }
+
 
 // Задание DrawStatus.
 //
